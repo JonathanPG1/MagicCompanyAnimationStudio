@@ -1,0 +1,1223 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Magic Company</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f3e8ff;
+        background-image: url('imagenes/Index/IndexFondo.png');
+        background-size: cover;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* MENÚ LATERAL */
+
+    #side-menu {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        background-color: rgba(157, 102, 255, 0.95);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    }
+
+    #side-menu a {
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        display: block;
+        transition: 0.3s;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    #side-menu a:hover {
+        background-color: white;
+        color: #9d66ff;
+    }
+
+    #side-menu .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+
+    #container {
+        width: 100%;
+        max-width: 500px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    header {
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+        min-height: 80px;
+    }
+
+    .btn-menu {
+        position: absolute;
+        left: 0;
+        width: 45px;
+        height: 45px;
+        background-color: white;
+        border: none;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 5;
+    }
+
+    .btn-menu span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: #9d66ff;
+        border-radius: 2px;
+    }
+
+    .logo-principal {
+        width: 90%;
+        height: auto;
+    }
+
+    .section-title {
+        background-color: #9d66ff;
+        color: white;
+        display: inline-block;
+        padding: 10px 25px;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: -15px;
+        position: relative;
+        z-index: 2;
+        text-transform: uppercase;
+    }
+
+    .card {
+        background-color: rgba(186, 145, 255, 0.7);
+        border-radius: 10px;
+        padding: 30px 15px 20px 15px;
+        margin-bottom: 40px;
+        display: block;
+        text-align: justify;
+    }
+
+    .img-frame {
+        background: white;
+        padding: 5px;
+        border-radius: 5px;
+        width: 45%;
+    }
+
+    .img-left {
+        float: left;
+        margin-right: 15px;
+        margin-bottom: 5px;
+    }
+
+    .img-right {
+        float: right;
+        margin-left: 15px;
+        margin-bottom: 5px;
+    }
+
+    .img-frame img {
+        width: 100%;
+        display: block;
+    }
+
+    .card p {
+        color: white;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 50px;
+        align-items: center;
+    }
+
+    .btn {
+        background-color: #e5b6f5;
+        color: #6a0dad;
+        text-decoration: none;
+        padding: 15px;
+        width: 250px;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 4px 0px #d49ce8;
+    }
+
+    footer {
+        width: 100%;
+        background-image: url('imagenes/Index/IndexFondocolores.png');
+        background-size: cover;
+        padding: 40px 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .social-icon {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
+
+    .social-icon:hover {
+        transform: scale(1.1);
+    }
+
+    .social-icon img {
+        width: 70%;
+    }
+
+    /* EFECTOS MÁGICOS */
+
+    #magic-effects {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 99999;
+    }
+
+    .magic-particle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #ffffff;
+        pointer-events: none;
+        user-select: none;
+        line-height: 1;
+        will-change: transform, opacity;
+        text-shadow:
+            0 0 4px #ffffff,
+            0 0 8px #e9c8ff,
+            0 0 14px #c084fc;
+    }
+
+    .magic-particle.falling {
+        animation: magic-fall var(--duration)
+                   ease-in var(--delay) forwards;
+    }
+
+    @keyframes magic-fall {
+        0% {
+            opacity: 0;
+            transform: translate3d(0, -15px, 0)
+                       rotate(0deg) scale(0.4);
+        }
+
+        12% { opacity: 1; }
+        75% { opacity: 0.9; }
+
+        100% {
+            opacity: 0;
+            transform: translate3d(
+                var(--drift), var(--fall), 0
+            ) rotate(var(--rotation)) scale(1.2);
+        }
+    }
+
+    .magic-particle.burst {
+        animation: magic-burst 650ms ease-out forwards;
+    }
+
+    @keyframes magic-burst {
+        0% {
+            opacity: 0;
+            transform: translate(-50%, -50%)
+                       scale(0.2) rotate(0deg);
+        }
+
+        20% { opacity: 1; }
+
+        100% {
+            opacity: 0;
+            transform: translate(
+                calc(-50% + var(--move-x)),
+                calc(-50% + var(--move-y))
+            ) scale(1.3) rotate(140deg);
+        }
+    }
+
+    #magic-transition {
+        position: fixed;
+        inset: 0;
+        background: rgba(157, 102, 255, 0.08);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 99998;
+        transition: opacity 180ms ease;
+    }
+
+    #magic-transition.active {
+        opacity: 1;
+    }
+
+    /* MISIÓN DE GAMIFICACIÓN */
+
+    #magic-mission {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.94);
+        border: 2px solid #c084fc;
+        border-radius: 16px;
+        padding: 22px 18px;
+        margin: 0 0 35px;
+        text-align: center;
+        box-shadow: 0 5px 18px rgba(106, 13, 173, 0.15);
+    }
+
+    #magic-mission h2 {
+        color: #7e22ce;
+        font-size: 23px;
+        line-height: 1.3;
+        margin-bottom: 12px;
+    }
+
+    #magic-mission p {
+        color: #56316f;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    .magic-discount {
+        color: #7e22ce;
+        font-size: 21px;
+        font-weight: bold;
+        line-height: 1.4;
+        margin: 15px 0;
+    }
+
+    .magic-progress-track {
+        height: 14px;
+        width: 100%;
+        background: #eadcf8;
+        border-radius: 20px;
+        overflow: hidden;
+        margin: 12px 0 8px;
+    }
+
+    #magic-progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #9d66ff, #e5b6f5);
+        border-radius: 20px;
+        transition: width 0.5s ease;
+    }
+
+    #magic-progress-text {
+        font-size: 13px;
+        color: #6a0dad;
+        font-weight: bold;
+        margin-bottom: 0 !important;
+    }
+
+    #magic-mission .magic-mission-link {
+        display: inline-block;
+        background: #9d66ff;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 12px;
+        box-shadow: 0 4px 0 #7541c4;
+    }
+
+    #magic-mission .magic-mission-link:hover {
+        background: #8247df;
+    }
+
+    /* PANEL DE PRUEBA: OCULTO POR DEFECTO */
+
+    #magic-test-panel {
+        display: none;
+        width: 100%;
+        margin: 0 0 35px;
+        padding: 16px;
+        background: #fff8db;
+        border: 2px dashed #d97706;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    #magic-test-panel.visible {
+        display: block;
+    }
+
+    #magic-test-panel h3 {
+        color: #92400e;
+        font-size: 17px;
+        margin-bottom: 8px;
+    }
+
+    #magic-test-panel p {
+        color: #78350f;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+    }
+
+    #magic-reset-mission {
+        background: #92400e;
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #magic-reset-mission:hover {
+        background: #78350f;
+    }
+
+    #magic-reset-feedback {
+        margin-top: 10px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    /* VENTANA DE RECOMPENSA */
+
+    #magic-reward {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 100001;
+        background: rgba(44, 17, 65, 0.85);
+        padding: 20px;
+        align-items: center;
+        justify-content: center;
+        overflow-y: auto;
+    }
+
+    #magic-reward.visible {
+        display: flex;
+    }
+
+    .magic-reward-card {
+        width: 100%;
+        max-width: 390px;
+        background: #ffffff;
+        border: 3px solid #c084fc;
+        border-radius: 20px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 0 35px rgba(192, 132, 252, 0.55);
+        animation: reward-appear 0.5s ease-out;
+    }
+
+    .magic-reward-card h2 {
+        color: #7e22ce;
+        font-size: 27px;
+        margin-bottom: 15px;
+    }
+
+    .magic-reward-card p {
+        color: #56316f;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    #magic-reward-code {
+        display: inline-block;
+        padding: 12px 18px;
+        margin: 5px 0 18px;
+        background: #f3e8ff;
+        border: 2px dashed #9d66ff;
+        border-radius: 8px;
+        color: #6a0dad;
+        font-size: 23px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        user-select: all;
+    }
+
+    .magic-reward-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .magic-reward-actions button {
+        background: #9d66ff;
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .magic-reward-actions button:hover {
+        background: #7541c4;
+    }
+
+    #magic-copy-feedback {
+        margin-top: 12px;
+        font-size: 13px;
+    }
+
+    @keyframes reward-appear {
+        from {
+            opacity: 0;
+            transform: scale(0.85);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @media (max-width: 380px) {
+        #container {
+            padding: 15px;
+        }
+
+        #magic-mission h2 {
+            font-size: 20px;
+        }
+
+        .magic-discount {
+            font-size: 19px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .magic-particle.falling {
+            animation-duration: 350ms;
+        }
+
+        .magic-particle.burst {
+            animation-duration: 250ms;
+        }
+
+        #magic-transition {
+            transition-duration: 100ms;
+        }
+
+        #magic-progress-bar {
+            transition: none;
+        }
+
+        .magic-reward-card {
+            animation: none;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- CAPAS PARA LOS EFECTOS MÁGICOS -->
+<div id="magic-transition"></div>
+<div id="magic-effects" aria-hidden="true"></div>
+
+<!-- MENÚ LATERAL -->
+<div id="side-menu">
+    <a href="javascript:void(0)" class="closebtn"
+       onclick="closeNav()" aria-label="Cerrar menú">&times;</a>
+
+    <a href="index.html">INICIO</a>
+    <a href="mision.html">MISIÓN</a>
+    <a href="disenadores.html">DISEÑADORES</a>
+    <a href="proyectos.html">PROYECTOS</a>
+</div>
+
+<div id="container">
+
+    <header>
+        <button class="btn-menu" onclick="openNav()"
+                aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <img src="imagenes/Index/IndexLogoprincipal.png"
+             class="logo-principal" alt="Magic Company">
+    </header>
+
+    <!-- BIENVENIDA Y MISIÓN -->
+
+    <section id="magic-mission"
+             aria-labelledby="magic-mission-title">
+
+        <h2 id="magic-mission-title">
+            ✨ ¡Descubre la magia de Magic Company! ✨
+        </h2>
+
+        <p>
+            Te invitamos a explorar nuestras especialidades,
+            descubrir el talento creativo que hay detrás de cada
+            proyecto y conocer todo lo que podemos crear.
+        </p>
+
+        <div class="magic-discount">
+            ¡Completa la misión y gana un 10 % de descuento!
+        </div>
+
+        <p>
+            Descubre nuestras cuatro especialidades para desbloquear
+            tu recompensa mágica.
+        </p>
+
+        <div class="magic-progress-track"
+             id="magic-progress-track"
+             role="progressbar"
+             aria-label="Progreso de especialidades descubiertas"
+             aria-valuemin="0"
+             aria-valuemax="4"
+             aria-valuenow="0">
+
+            <div id="magic-progress-bar"></div>
+        </div>
+
+        <p id="magic-progress-text" aria-live="polite">
+            ⭐ 0 de 4 especialidades descubiertas
+        </p>
+
+        <a href="proyectos.html" class="magic-mission-link">
+            Comenzar la misión ✨
+        </a>
+    </section>
+
+    <!-- PANEL DE PRUEBA: SOLO CON ?modoPrueba=1 -->
+
+    <section id="magic-test-panel"
+             aria-labelledby="magic-test-title">
+
+        <h3 id="magic-test-title">🧪 Modo de prueba activado</h3>
+
+        <p>
+            Utiliza este botón para volver a probar la misión desde
+            cero. Solo se borrarán los datos de progreso y recompensa
+            de Magic Company guardados en este navegador.
+        </p>
+
+        <button type="button" id="magic-reset-mission">
+            Reiniciar misión de prueba
+        </button>
+
+        <p id="magic-reset-feedback" aria-live="polite"></p>
+    </section>
+
+    <!-- CONTENIDO ORIGINAL -->
+
+    <div class="section-title">¿QUIÉNES SOMOS?</div>
+
+    <div class="card">
+        <div class="img-frame img-left">
+            <img src="imagenes/Index/IndexImagen1.jpg"
+                 alt="Proyecto creativo de Magic Company">
+        </div>
+
+        <p>
+            Magic Company es un estudio creativo de alta tecnología
+            que fusiona el arte digital con la narrativa para dar vida
+            a proyectos innovadores. Nuestra plataforma destaca por
+            una estética moderna y profesional, especializada en
+            diseño de personajes, modelado 3D y efectos visuales para
+            la industria de los videojuegos y el cine.
+        </p>
+    </div>
+
+    <div class="section-title">NUESTROS VALORES</div>
+
+    <div class="card">
+        <div class="img-frame img-right">
+            <img src="imagenes/Index/IndexImagen2.jpg"
+                 alt="Arte y creatividad digital">
+        </div>
+
+        <p>
+            Nuestra cultura se fundamenta en la innovación constante
+            y una excelencia técnica que se refleja en cada detalle
+            de nuestras creaciones digitales. Nos apasiona la narrativa
+            visual como motor para conectar con el espectador, basando
+            nuestro éxito en una colaboración estrecha con nuestros
+            clientes para materializar sus visiones. Todo esto lo
+            logramos manteniendo una evolución continua, siempre a la
+            vanguardia de las nuevas tecnologías para liderar el futuro
+            del diseño y la animación.
+        </p>
+    </div>
+
+    <div class="btn-group">
+        <a href="mision.html" class="btn">MISIÓN</a>
+        <a href="disenadores.html" class="btn">DISEÑADORES</a>
+        <a href="proyectos.html" class="btn">PROYECTOS</a>
+    </div>
+
+</div>
+
+<!-- VENTANA DE RECOMPENSA -->
+
+<div id="magic-reward"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="magic-reward-title"
+     aria-hidden="true">
+
+    <div class="magic-reward-card">
+
+        <h2 id="magic-reward-title">
+            🎉 ¡Felicidades! 🎉
+        </h2>
+
+        <p>
+            ¡Has descubierto todas las especialidades de Magic Company!
+            Has completado la misión y conocido nuestra magia creativa.
+        </p>
+
+        <div class="magic-discount">
+            ¡GANASTE UN 10 % DE DESCUENTO!
+        </div>
+
+        <p>Tu código promocional es:</p>
+
+        <div id="magic-reward-code">MAGIA10</div>
+
+        <p>
+            ¡Gracias por explorar nuestro universo creativo!
+        </p>
+
+        <div class="magic-reward-actions">
+            <button type="button" id="magic-copy-code">
+                Copiar código
+            </button>
+
+            <button type="button" id="magic-close-reward">
+                ¡Genial!
+            </button>
+        </div>
+
+        <p id="magic-copy-feedback" aria-live="polite"></p>
+
+    </div>
+</div>
+
+<!-- PIE DE PÁGINA -->
+
+<footer>
+    <a href="https://www.facebook.com"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="social-icon"
+       aria-label="Facebook">
+
+        <img src="imagenes/Index/IndexFacebook.jpg"
+             alt="Facebook">
+    </a>
+
+    <a href="https://www.instagram.com"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="social-icon"
+       aria-label="Instagram">
+
+        <img src="imagenes/Index/IndexInstagram.jpg"
+             alt="Instagram">
+    </a>
+
+    <a href="https://wa.me/"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="social-icon"
+       aria-label="WhatsApp">
+
+        <img src="imagenes/Index/IndexWats.jpg"
+             alt="WhatsApp">
+    </a>
+</footer>
+
+<script>
+    /* FUNCIONES DEL MENÚ */
+
+    function openNav() {
+        document.getElementById("side-menu").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("side-menu").style.width = "0";
+    }
+
+    /* EFECTOS MÁGICOS */
+
+    const magicEffects = document.getElementById("magic-effects");
+    const magicTransition = document.getElementById("magic-transition");
+
+    const magicColors = [
+        "#ffffff",
+        "#ffffff",
+        "#f8edff",
+        "#e9c8ff",
+        "#d8a5ff",
+        "#c084fc",
+        "#b57aff",
+        "#f3e8ff"
+    ];
+
+    const magicSymbols = ["✦", "✧", "⋆", "·", "✧", "✦", "•"];
+
+    function createParticle(className, x, y) {
+        const particle = document.createElement("span");
+
+        particle.className = "magic-particle " + className;
+
+        const color = magicColors[
+            Math.floor(Math.random() * magicColors.length)
+        ];
+
+        const symbol = magicSymbols[
+            Math.floor(Math.random() * magicSymbols.length)
+        ];
+
+        particle.textContent = symbol;
+        particle.style.color = color;
+
+        const size = 6 + Math.random() * 13;
+        particle.style.fontSize = size + "px";
+
+        particle.style.textShadow =
+            "0 0 4px #ffffff, 0 0 8px " + color +
+            ", 0 0 15px #c084fc";
+
+        if (x !== undefined && y !== undefined) {
+            particle.style.left = x + "px";
+            particle.style.top = y + "px";
+        }
+
+        return particle;
+    }
+
+    /* CASCADA DE BRILLOS */
+
+    function startMagicRain(count = 100, duration = 1100) {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        for (let i = 0; i < count; i++) {
+            const particle = createParticle("falling");
+
+            particle.style.left =
+                Math.random() * screenWidth + "px";
+
+            particle.style.top =
+                (-10 - Math.random() * 100) + "px";
+
+            particle.style.setProperty(
+                "--fall",
+                (screenHeight + 120) + "px"
+            );
+
+            particle.style.setProperty(
+                "--drift",
+                (-70 + Math.random() * 140) + "px"
+            );
+
+            particle.style.setProperty(
+                "--rotation",
+                (-240 + Math.random() * 480) + "deg"
+            );
+
+            particle.style.setProperty(
+                "--duration",
+                (duration * (0.65 + Math.random() * 0.7)) + "ms"
+            );
+
+            particle.style.setProperty(
+                "--delay",
+                (Math.random() * 350) + "ms"
+            );
+
+            magicEffects.appendChild(particle);
+
+            particle.addEventListener("animationend", function () {
+                particle.remove();
+            }, { once: true });
+        }
+    }
+
+    /* DESTELLOS AL PRESIONAR */
+
+    function createMagicBurst(x, y, count = 14) {
+        for (let i = 0; i < count; i++) {
+            const particle = createParticle("burst", x, y);
+
+            const angle =
+                (Math.PI * 2 * i / count) + (Math.random() * 0.3);
+
+            const distance = 20 + Math.random() * 55;
+
+            const moveX = Math.cos(angle) * distance;
+            const moveY = Math.sin(angle) * distance;
+
+            particle.style.setProperty(
+                "--move-x",
+                moveX + "px"
+            );
+
+            particle.style.setProperty(
+                "--move-y",
+                moveY + "px"
+            );
+
+            magicEffects.appendChild(particle);
+
+            particle.addEventListener("animationend", function () {
+                particle.remove();
+            }, { once: true });
+        }
+    }
+
+    /* DESTELLOS Y TRANSICIÓN AL NAVEGAR */
+
+    document.addEventListener("click", function (event) {
+        const element = event.target.closest("button, a");
+
+        if (!element) {
+            return;
+        }
+
+        if (element.getAttribute("aria-disabled") === "true") {
+            return;
+        }
+
+        let x = event.clientX;
+        let y = event.clientY;
+
+        if (event.detail === 0) {
+            const rect = element.getBoundingClientRect();
+
+            x = rect.left + rect.width / 2;
+            y = rect.top + rect.height / 2;
+        }
+
+        createMagicBurst(x, y, 14);
+
+        if (
+            element.tagName === "A" &&
+            element.target === "_blank"
+        ) {
+            return;
+        }
+
+        if (
+            element.tagName === "BUTTON" ||
+            element.getAttribute("href")?.startsWith("javascript:") ||
+            element.getAttribute("href")?.startsWith("#")
+        ) {
+            return;
+        }
+
+        if (element.tagName === "A") {
+            const destination = element.href;
+
+            if (
+                destination &&
+                element.origin === window.location.origin &&
+                !event.ctrlKey &&
+                !event.metaKey &&
+                !event.shiftKey &&
+                event.button === 0
+            ) {
+                event.preventDefault();
+
+                if (window.magicNavigating) {
+                    return;
+                }
+
+                window.magicNavigating = true;
+
+                magicTransition.classList.add("active");
+                startMagicRain(85, 650);
+
+                setTimeout(function () {
+                    window.location.href = destination;
+                }, 450);
+            }
+        }
+    });
+
+    /* EFECTO AL ENTRAR */
+
+    window.addEventListener("load", function () {
+        startMagicRain(110, 1200);
+    });
+
+    /* ==========================================
+       GAMIFICACIÓN: PROGRESO Y RECOMPENSA
+       ========================================== */
+
+    const MAGIC_AREAS_KEY = "magicAreasDescubiertas";
+    const MAGIC_REWARD_KEY = "magicRecompensaMostrada";
+
+    const magicAreas = [
+        "diseno-personajes",
+        "concept-art",
+        "modelado-3d",
+        "efectos-especiales"
+    ];
+
+    /* RECUPERAR ESPECIALIDADES GUARDADAS */
+
+    function getMagicAreasDiscovered() {
+        try {
+            const saved = JSON.parse(
+                localStorage.getItem(MAGIC_AREAS_KEY) || "[]"
+            );
+
+            if (!Array.isArray(saved)) {
+                return [];
+            }
+
+            return [...new Set(
+                saved.filter(area => magicAreas.includes(area))
+            )];
+
+        } catch (error) {
+            return [];
+        }
+    }
+
+    /* ACTUALIZAR PROGRESO Y RECOMPENSA */
+
+    function updateMagicMission() {
+        const discovered = getMagicAreasDiscovered();
+
+        const total = magicAreas.length;
+        const count = discovered.length;
+        const percentage = (count / total) * 100;
+
+        const progressBar =
+            document.getElementById("magic-progress-bar");
+
+        const progressText =
+            document.getElementById("magic-progress-text");
+
+        const progressTrack =
+            document.getElementById("magic-progress-track");
+
+        const missionTitle =
+            document.getElementById("magic-mission-title");
+
+        const missionDiscount =
+            document.querySelector(
+                "#magic-mission .magic-discount"
+            );
+
+        const reward =
+            document.getElementById("magic-reward");
+
+        if (
+            !progressBar ||
+            !progressText ||
+            !progressTrack ||
+            !missionTitle ||
+            !missionDiscount ||
+            !reward
+        ) {
+            return;
+        }
+
+        progressBar.style.width = percentage + "%";
+
+        progressText.textContent =
+            `⭐ ${count} de ${total} especialidades descubiertas`;
+
+        progressTrack.setAttribute(
+            "aria-valuenow",
+            String(count)
+        );
+
+        if (count === total) {
+            missionTitle.textContent =
+                "✨ ¡Misión completada! ✨";
+
+            missionDiscount.textContent =
+                "¡Tu 10 % de descuento te está esperando!";
+
+            let rewardAlreadyShown = false;
+
+            try {
+                rewardAlreadyShown =
+                    localStorage.getItem(MAGIC_REWARD_KEY) === "true";
+            } catch (error) {
+                rewardAlreadyShown = false;
+            }
+
+            if (!rewardAlreadyShown) {
+                reward.classList.add("visible");
+                reward.setAttribute("aria-hidden", "false");
+
+                try {
+                    localStorage.setItem(MAGIC_REWARD_KEY, "true");
+                } catch (error) {
+                    /* La recompensa seguirá funcionando sin almacenamiento. */
+                }
+
+                startMagicRain(100, 900);
+            }
+
+        } else {
+            missionTitle.textContent =
+                "✨ ¡Descubre la magia de Magic Company! ✨";
+
+            missionDiscount.textContent =
+                "¡Completa la misión y gana un 10 % de descuento!";
+        }
+    }
+
+    /* CERRAR VENTANA DE RECOMPENSA */
+
+    document.getElementById("magic-close-reward")
+        .addEventListener("click", function () {
+            const reward =
+                document.getElementById("magic-reward");
+
+            reward.classList.remove("visible");
+            reward.setAttribute("aria-hidden", "true");
+        });
+
+    /* COPIAR CÓDIGO PROMOCIONAL */
+
+    document.getElementById("magic-copy-code")
+        .addEventListener("click", async function () {
+            const feedback =
+                document.getElementById("magic-copy-feedback");
+
+            try {
+                if (
+                    !navigator.clipboard ||
+                    !navigator.clipboard.writeText
+                ) {
+                    throw new Error("Portapapeles no disponible");
+                }
+
+                await navigator.clipboard.writeText("MAGIA10");
+
+                feedback.textContent =
+                    "¡Código copiado! Ya puedes guardarlo.";
+
+            } catch (error) {
+                feedback.textContent =
+                    "Tu código es MAGIA10. Selecciónalo y cópialo manualmente.";
+            }
+        });
+
+    /* ==========================================
+       MODO DE PRUEBA
+       Se activa con ?modoPrueba=1
+       ========================================== */
+
+    const magicTestMode =
+        new URLSearchParams(window.location.search)
+            .get("modoPrueba") === "1";
+
+    const magicTestPanel =
+        document.getElementById("magic-test-panel");
+
+    const magicResetButton =
+        document.getElementById("magic-reset-mission");
+
+    const magicResetFeedback =
+        document.getElementById("magic-reset-feedback");
+
+    /* MOSTRAR PANEL SOLO EN MODO DE PRUEBA */
+
+    if (magicTestMode && magicTestPanel) {
+        magicTestPanel.classList.add("visible");
+    }
+
+    /* REINICIAR PROGRESO DE LA MISIÓN */
+
+    if (magicTestMode && magicResetButton) {
+        magicResetButton.addEventListener("click", function () {
+            try {
+                localStorage.removeItem(MAGIC_AREAS_KEY);
+                localStorage.removeItem(MAGIC_REWARD_KEY);
+
+                const reward =
+                    document.getElementById("magic-reward");
+
+                reward.classList.remove("visible");
+                reward.setAttribute("aria-hidden", "true");
+
+                document.getElementById("magic-copy-feedback")
+                    .textContent = "";
+
+                updateMagicMission();
+
+                magicResetFeedback.textContent =
+                    "✨ ¡Misión reiniciada! Ya puedes comenzar de nuevo.";
+
+                startMagicRain(45, 650);
+
+            } catch (error) {
+                magicResetFeedback.textContent =
+                    "No se pudo reiniciar el progreso. Revisa la configuración del navegador.";
+            }
+        });
+    }
+
+    /* MOSTRAR PROGRESO GUARDADO AL CARGAR */
+
+    updateMagicMission();
+</script>
+
+</body>
+</html>

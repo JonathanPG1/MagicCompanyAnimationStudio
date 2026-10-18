@@ -1,0 +1,750 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diseño de Personajes - Magic Company</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #d6c7f5, #eee6ff);
+    }
+
+    /* MENU LATERAL */
+    #side-menu {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        background-color: rgba(157, 102, 255, 0.95);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    #side-menu a {
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        display: block;
+        transition: 0.3s;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    #side-menu a:hover {
+        background-color: white;
+        color: #9d66ff;
+    }
+
+    #side-menu .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* ENCABEZADO */
+    .header {
+        position: relative;
+        height: 130px;
+    }
+
+    .header img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .btn-back {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-right: 25px solid blue;
+        cursor: pointer;
+        background: none;
+        border-left: none;
+    }
+
+    /* BOTON DEL MENU */
+    .btn-menu {
+        position: absolute;
+        left: 20px;
+        bottom: -55px;
+        width: 45px;
+        height: 45px;
+        background-color: white;
+        border: none;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+    }
+
+    .btn-menu span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: #9d66ff;
+        border-radius: 2px;
+    }
+
+    /* CONTENEDOR */
+    .container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #b36bff;
+        font-size: 34px;
+        margin: 25px 0;
+    }
+
+    /* TARJETA PRINCIPAL */
+    .card {
+        background: linear-gradient(135deg, #9d66ff, #7a4ce0);
+        padding: 25px;
+        color: white;
+        border-radius: 10px;
+        margin: 0 auto 30px auto;
+        text-align: center;
+        max-width: 650px;
+    }
+
+    .card img {
+        width: 100%;
+        max-width: 320px;
+        border: 6px solid white;
+        margin-top: 20px;
+    }
+
+    .card p {
+        line-height: 1.6;
+    }
+
+    .section-btn {
+        display: block;
+        margin: 25px auto;
+        background: #8c5bff;
+        color: white;
+        padding: 14px 20px;
+        font-weight: bold;
+        text-align: center;
+        width: 240px;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+    /* GRID DE PROYECTOS */
+    .projects {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .project {
+        background: linear-gradient(135deg, #9d66ff, #7a4ce0);
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+    }
+
+    .project img {
+        width: 100%;
+        max-width: 260px;
+        border: 6px solid white;
+        margin-bottom: 10px;
+    }
+
+    .project p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    @media (min-width: 768px) {
+        .projects {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* PIE DE PAGINA */
+    .footer {
+        background-image: url('imagenes/DisenodePersonajes/FondoMosaico2.png');
+        background-size: cover;
+        background-position: center;
+        height: 130px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icons {
+        display: flex;
+        gap: 25px;
+    }
+
+    .icons a {
+        text-decoration: none;
+        display: flex;
+        transition: 0.3s;
+    }
+
+    .icons a:hover {
+        transform: scale(1.1);
+    }
+
+    .icons img {
+        width: 55px;
+    }
+
+    /* EFECTOS MAGICOS */
+    #magic-effects {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 99999;
+    }
+
+    .magic-particle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #ffffff;
+        pointer-events: none;
+        user-select: none;
+        line-height: 1;
+        will-change: transform, opacity;
+    }
+
+    .magic-particle.falling {
+        animation: magic-fall var(--duration) ease-in var(--delay) forwards;
+    }
+
+    @keyframes magic-fall {
+        0% {
+            opacity: 0;
+            transform: translate3d(0, -15px, 0) rotate(0deg) scale(0.4);
+        }
+
+        12% {
+            opacity: 1;
+        }
+
+        75% {
+            opacity: 0.9;
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate3d(var(--drift), var(--fall), 0)
+                rotate(var(--rotation)) scale(1.2);
+        }
+    }
+
+    .magic-particle.burst {
+        animation: magic-burst 650ms ease-out forwards;
+    }
+
+    @keyframes magic-burst {
+        0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+        }
+
+        20% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate(
+                calc(-50% + var(--move-x)),
+                calc(-50% + var(--move-y))
+            ) scale(1.3) rotate(140deg);
+        }
+    }
+
+    /* TRANSICION ENTRE PAGINAS */
+    #magic-transition {
+        position: fixed;
+        inset: 0;
+        background: rgba(157, 102, 255, 0.08);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 99998;
+        transition: opacity 180ms ease;
+    }
+
+    #magic-transition.active {
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .magic-particle.falling {
+            animation-duration: 350ms;
+        }
+
+        .magic-particle.burst {
+            animation-duration: 250ms;
+        }
+
+        #magic-transition {
+            transition-duration: 100ms;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- CAPAS DE EFECTOS MAGICOS -->
+<div id="magic-transition"></div>
+<div id="magic-effects" aria-hidden="true"></div>
+
+<!-- MENU LATERAL -->
+<div id="side-menu">
+    <a href="javascript:void(0)" class="closebtn"
+       onclick="closeNav()" aria-label="Cerrar menú">&times;</a>
+
+    <a href="index.html">INICIO</a>
+    <a href="mision.html">MISIÓN</a>
+    <a href="disenadores.html">DISEÑADORES</a>
+    <a href="proyectos.html">PROYECTOS</a>
+</div>
+
+<!-- ENCABEZADO -->
+<div class="header">
+    <img src="imagenes/DisenodePersonajes/FondoMosaico.png"
+         alt="Fondo decorativo de Magic Company">
+
+    <button class="btn-back"
+            onclick="history.back()"
+            aria-label="Regresar"></button>
+
+    <button class="btn-menu"
+            onclick="openNav()"
+            aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="container">
+
+    <h1>DISEÑO DE PERSONAJES</h1>
+
+    <div class="card">
+        <p>
+            Transformamos conceptos bidimensionales en activos digitales con
+            volumen, textura y vida. Nuestro modelado 3D se enfoca en la
+            creación de personajes, entornos y objetos con una geometría
+            optimizada, garantizando un acabado visual de alta fidelidad
+            técnica que está listo para integrarse en motores de videojuegos
+            o producciones cinematográficas.
+        </p>
+
+        <img src="imagenes/DisenodePersonajes/FondoDibujante.png"
+             alt="Ilustración del proceso de diseño de personajes">
+    </div>
+
+    <div class="section-btn">NUESTROS PROYECTOS</div>
+
+    <div class="projects">
+
+        <div class="project">
+            <img src="imagenes/DisenodePersonajes/FondoFantasmas.png"
+                 alt="Diseño de personaje con estética mística">
+
+            <p>
+                Diseño de personaje que fusiona una estética mística con
+                narrativa de fantasía oscura. Destaca por su paleta de
+                colores fríos y el fuerte contraste visual entre la figura
+                central y sus sombras espectrales.
+            </p>
+        </div>
+
+        <div class="project">
+            <img src="imagenes/DisenodePersonajes/FondoPersonajeSobrenatural.png"
+                 alt="Diseño de personaje sobrenatural">
+
+            <p>
+                Diseño de personaje que fusiona una estética terrorífica con
+                narrativa de fantasía oscura. Destaca por su paleta de
+                colores fríos y el contraste entre la figura central y la
+                iluminación, generando una atmósfera inquietante y
+                sobrenatural.
+            </p>
+        </div>
+
+        <div class="project">
+            <img src="imagenes/DisenodePersonajes/Ajolotedosdedos.png"
+                 alt="Concept art de personaje con estilo kawaii">
+
+            <p>
+                Concept art de mascota escolar: una flor kawaii que representa
+                calma, crecimiento y bienestar. Con colores pastel y formas
+                suaves, funciona como símbolo de un espacio seguro donde los
+                alumnos pueden relajarse y florecer emocionalmente.
+            </p>
+        </div>
+
+        <div class="project">
+            <img src="imagenes/DisenodePersonajes/FondoGusano.png"
+                 alt="Diseño de personaje para caricatura infantil">
+
+            <p>
+                Diseño de personaje para caricatura infantil, con estilo
+                divertido y amigable. Destaca por sus colores vibrantes,
+                formas redondeadas y expresión alegre, creando una imagen
+                llamativa, accesible y atractiva para el público infantil.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- PIE DE PAGINA -->
+<div class="footer">
+    <div class="icons">
+
+        <a href="https://www.facebook.com"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Facebook">
+            <img src="imagenes/DisenodePersonajes/LogoFb.png"
+                 alt="Facebook">
+        </a>
+
+        <a href="https://www.instagram.com"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+            <img src="imagenes/DisenodePersonajes/LogoIG.png"
+                 alt="Instagram">
+        </a>
+
+        <a href="https://api.whatsapp.com/"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="WhatsApp">
+            <img src="imagenes/DisenodePersonajes/LogoWa.png"
+                 alt="WhatsApp">
+        </a>
+
+    </div>
+</div>
+
+<script>
+/* MENU LATERAL */
+function openNav() {
+    document.getElementById("side-menu").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("side-menu").style.width = "0";
+}
+
+/* =========================================
+   GAMIFICACION: REGISTRO DE ESPECIALIDADES
+   ========================================= */
+
+function registrarEspecialidad(area) {
+    const areasValidas = [
+        "efectos-especiales",
+        "diseno-personajes",
+        "concept-art",
+        "modelado-3d"
+    ];
+
+    if (!areasValidas.includes(area)) {
+        return;
+    }
+
+    try {
+        let areas = JSON.parse(
+            localStorage.getItem("magicAreasDescubiertas")
+        ) || [];
+
+        if (!Array.isArray(areas)) {
+            areas = [];
+        }
+
+        /* Evitar contar la misma especialidad más de una vez */
+        if (!areas.includes(area)) {
+            areas.push(area);
+
+            localStorage.setItem(
+                "magicAreasDescubiertas",
+                JSON.stringify(areas)
+            );
+        }
+    } catch (error) {
+        console.warn(
+            "No se pudo guardar el progreso de la misión.",
+            error
+        );
+    }
+}
+
+/*
+   Esta página corresponde a Diseño de Personajes.
+   Al cargarla, se registra la especialidad automáticamente.
+*/
+registrarEspecialidad("diseno-personajes");
+
+/* =========================================
+   SISTEMA DE EFECTOS MAGICOS
+   ========================================= */
+
+const magicEffects = document.getElementById("magic-effects");
+const magicTransition = document.getElementById("magic-transition");
+
+const magicColors = [
+    "#ffffff",
+    "#ffffff",
+    "#f8edff",
+    "#e9c8ff",
+    "#d8a5ff",
+    "#c084fc",
+    "#b57aff",
+    "#f3e8ff"
+];
+
+const magicSymbols = ["✦", "✧", "⋆", "·", "✧", "✦", "•"];
+
+/* Crear una partícula */
+function createParticle(className, x, y) {
+    const particle = document.createElement("span");
+
+    particle.className = "magic-particle " + className;
+
+    const color = magicColors[
+        Math.floor(Math.random() * magicColors.length)
+    ];
+
+    const symbol = magicSymbols[
+        Math.floor(Math.random() * magicSymbols.length)
+    ];
+
+    particle.textContent = symbol;
+
+    const size = 6 + Math.random() * 13;
+
+    particle.style.fontSize = size + "px";
+    particle.style.color = color;
+
+    particle.style.textShadow =
+        "0 0 4px #ffffff, 0 0 8px " + color + ", 0 0 15px #c084fc";
+
+    if (x !== undefined && y !== undefined) {
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+    }
+
+    return particle;
+}
+
+/* Lluvia mágica */
+function startMagicRain(count = 100, duration = 1100) {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    for (let i = 0; i < count; i++) {
+        const particle = createParticle("falling");
+
+        particle.style.left =
+            Math.random() * screenWidth + "px";
+
+        particle.style.top =
+            (-10 - Math.random() * 100) + "px";
+
+        particle.style.setProperty(
+            "--fall",
+            (screenHeight + 120) + "px"
+        );
+
+        particle.style.setProperty(
+            "--drift",
+            (-70 + Math.random() * 140) + "px"
+        );
+
+        particle.style.setProperty(
+            "--rotation",
+            (-240 + Math.random() * 480) + "deg"
+        );
+
+        particle.style.setProperty(
+            "--duration",
+            (duration * (0.65 + Math.random() * 0.7)) + "ms"
+        );
+
+        particle.style.setProperty(
+            "--delay",
+            (Math.random() * 350) + "ms"
+        );
+
+        magicEffects.appendChild(particle);
+
+        particle.addEventListener(
+            "animationend",
+            () => particle.remove(),
+            { once: true }
+        );
+    }
+}
+
+/* Destellos al hacer clic */
+function createMagicBurst(x, y, count = 14) {
+    for (let i = 0; i < count; i++) {
+        const particle = createParticle("burst", x, y);
+
+        const angle =
+            (Math.PI * 2 * i / count) + (Math.random() * 0.3);
+
+        const distance = 20 + Math.random() * 55;
+
+        particle.style.setProperty(
+            "--move-x",
+            (Math.cos(angle) * distance) + "px"
+        );
+
+        particle.style.setProperty(
+            "--move-y",
+            (Math.sin(angle) * distance) + "px"
+        );
+
+        magicEffects.appendChild(particle);
+
+        particle.addEventListener(
+            "animationend",
+            () => particle.remove(),
+            { once: true }
+        );
+    }
+}
+
+/* Detectar clics y realizar la transición mágica */
+document.addEventListener("click", function(event) {
+    const element = event.target.closest("button, a");
+
+    if (!element) return;
+
+    /* No generar destellos dentro del menú lateral */
+    if (element.closest("#side-menu")) return;
+
+    if (element.getAttribute("aria-disabled") === "true") return;
+
+    let x = event.clientX;
+    let y = event.clientY;
+
+    /* Posición del efecto cuando se activa con el teclado */
+    if (event.detail === 0) {
+        const rect = element.getBoundingClientRect();
+
+        x = rect.left + rect.width / 2;
+        y = rect.top + rect.height / 2;
+    }
+
+    createMagicBurst(x, y, 14);
+
+    /* Mantener los enlaces externos en otra pestaña */
+    if (
+        element.tagName === "A" &&
+        element.target === "_blank"
+    ) {
+        return;
+    }
+
+    /* Conservar las acciones de los botones */
+    if (element.tagName === "BUTTON") {
+        return;
+    }
+
+    const href = element.getAttribute("href");
+
+    if (
+        !href ||
+        href.startsWith("javascript:") ||
+        href.startsWith("#") ||
+        href.startsWith("mailto:") ||
+        href.startsWith("tel:")
+    ) {
+        return;
+    }
+
+    /* Respetar acciones especiales del navegador */
+    if (
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey ||
+        event.button !== 0
+    ) {
+        return;
+    }
+
+    const destination = element.href;
+
+    /* Transición solo entre páginas del mismo sitio */
+    if (
+        !destination ||
+        element.origin !== window.location.origin
+    ) {
+        return;
+    }
+
+    event.preventDefault();
+
+    if (window.magicNavigating) return;
+
+    window.magicNavigating = true;
+
+    magicTransition.classList.add("active");
+
+    startMagicRain(85, 650);
+
+    setTimeout(function() {
+        window.location.href = destination;
+    }, 450);
+});
+
+/* Lluvia inicial al entrar */
+window.addEventListener("load", function() {
+    startMagicRain(110, 1200);
+});
+</script>
+
+</body>
+</html>

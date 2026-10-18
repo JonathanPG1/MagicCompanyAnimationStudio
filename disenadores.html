@@ -7,11 +7,15 @@
 <title>Diseñadores - Magic Company</title>
 
 <style>
-    *{margin: 0; padding: 0; box-sizing: border-box;}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
     body {
         background-color: #f3e8ff;
-        background-image: url('imagenes/Index/IndexFondo.png'); 
+        background-image: url('imagenes/Index/IndexFondo.png');
         background-size: cover;
         background-attachment: fixed;
         font-family: Arial, sans-serif;
@@ -59,8 +63,8 @@
     }
 
     /* --- HEADER ANCHO TOTAL --- */
-    header { 
-        width: 100vw; 
+    header {
+        width: 100vw;
         margin-bottom: 20px;
     }
 
@@ -94,10 +98,10 @@
     .btn-menu {
         position: absolute;
         left: 20px;
-        bottom: -55px; 
+        bottom: -55px;
         width: 45px;
         height: 45px;
-        background-color: white; 
+        background-color: white;
         border: none;
         border-radius: 5px;
         display: flex;
@@ -114,13 +118,13 @@
         display: block;
         width: 25px;
         height: 3px;
-        background-color: #9d66ff; 
+        background-color: #9d66ff;
         border-radius: 2px;
     }
 
     #container {
         width: 100%;
-        max-width: 500px; 
+        max-width: 500px;
         padding: 20px;
         text-align: center;
         margin-top: 40px;
@@ -208,9 +212,13 @@
         transition: transform 0.3s ease;
     }
 
-    .social-icon:hover { transform: scale(1.1); }
-    .social-icon img { width: 70%; }
+    .social-icon:hover {
+        transform: scale(1.1);
+    }
 
+    .social-icon img {
+        width: 70%;
+    }
 
     /* ==========================================
        EFECTOS MÁGICOS - MAGIC COMPANY
@@ -315,7 +323,6 @@
             transition-duration: 100ms;
         }
     }
-
 </style>
 </head>
 
@@ -325,19 +332,27 @@
 <div id="magic-transition"></div>
 <div id="magic-effects" aria-hidden="true"></div>
 
+<!-- MENÚ LATERAL -->
 <div id="side-menu">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="javascript:void(0)" class="closebtn"
+       onclick="closeNav()" aria-label="Cerrar menú">&times;</a>
+
     <a href="index.html">INICIO</a>
     <a href="mision.html">MISIÓN</a>
     <a href="disenadores.html">DISEÑADORES</a>
     <a href="proyectos.html">PROYECTOS</a>
 </div>
 
+<!-- ENCABEZADO -->
 <header>
     <div class="top-banner">
-        <button class="btn-back" onclick="history.back()" aria-label="Regresar"></button>
+        <button class="btn-back"
+                onclick="history.back()"
+                aria-label="Regresar"></button>
 
-        <button class="btn-menu" onclick="openNav()" aria-label="Abrir menú">
+        <button class="btn-menu"
+                onclick="openNav()"
+                aria-label="Abrir menú">
             <span></span>
             <span></span>
             <span></span>
@@ -345,14 +360,17 @@
     </div>
 </header>
 
+<!-- CONTENIDO PRINCIPAL -->
 <div id="container">
 
     <div class="section-title">DISEÑADORES</div>
 
     <div class="card">
         <div class="img-frame">
-            <img src="imagenes/Disenadores/Disenadores.jpg">
+            <img src="imagenes/Disenadores/Disenadores.jpg"
+                 alt="Equipo de diseñadores de Magic Company">
         </div>
+
         <p>Como animadores y diseñadores, somos los encargados de infundir movimiento y alma a cada creación digital. Nuestra labor combina la precisión técnica con la sensibilidad artística para dar vida a personajes y entornos, transformando mallas estáticas en secuencias dinámicas que cuentan historias y generan emociones a través del ritmo, el tiempo y la fluidez.</p>
     </div>
 
@@ -365,31 +383,87 @@
 
 </div>
 
+<!-- PIE DE PÁGINA -->
 <footer>
-    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon">
-        <img src="imagenes/Index/IndexFacebook.jpg">
+    <a href="https://www.facebook.com"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="social-icon"
+       aria-label="Facebook">
+        <img src="imagenes/Index/IndexFacebook.jpg" alt="Facebook">
     </a>
 
-    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon">
-        <img src="imagenes/Index/IndexInstagram.jpg">
+    <a href="https://www.instagram.com"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="social-icon"
+       aria-label="Instagram">
+        <img src="imagenes/Index/IndexInstagram.jpg" alt="Instagram">
     </a>
 
-    <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" class="social-icon">
-        <img src="imagenes/Index/IndexWats.jpg">
+    <a href="https://wa.me/"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="social-icon"
+       aria-label="WhatsApp">
+        <img src="imagenes/Index/IndexWats.jpg" alt="WhatsApp">
     </a>
 </footer>
 
 <script>
-    /* --- FUNCIONES ORIGINALES DEL MENÚ --- */
+    /* ==========================================
+       FUNCIONES DEL MENÚ LATERAL
+       ========================================== */
 
     function openNav() {
-        document.getElementById("side-menu").style.width = "250px";
+        const menu = document.getElementById("side-menu");
+
+        if (menu) {
+            menu.style.width = "250px";
+        }
     }
 
     function closeNav() {
-        document.getElementById("side-menu").style.width = "0";
+        const menu = document.getElementById("side-menu");
+
+        if (menu) {
+            menu.style.width = "0";
+        }
     }
 
+    /* ==========================================
+       CORRECCIÓN DE NAVEGACIÓN AL REGRESAR
+       ========================================== */
+
+    /*
+       Restablece el estado cuando el navegador vuelve a mostrar
+       esta página, incluso si la recupera desde su memoria.
+    */
+
+    window.magicNavigating = false;
+
+    function resetMagicNavigation() {
+        window.magicNavigating = false;
+
+        const transition = document.getElementById("magic-transition");
+        const menu = document.getElementById("side-menu");
+
+        if (transition) {
+            transition.classList.remove("active");
+        }
+
+        if (menu) {
+            menu.style.width = "0";
+        }
+    }
+
+    window.addEventListener("pageshow", function () {
+        resetMagicNavigation();
+    });
+
+    window.addEventListener("pagehide", function () {
+        window.magicNavigating = false;
+    });
 
     /* ==========================================
        SISTEMA DE EFECTOS MÁGICOS
@@ -410,7 +484,6 @@
     ];
 
     const magicSymbols = ["✦", "✧", "⋆", "·", "✧", "✦", "•"];
-
 
     /* Crear partículas */
     function createParticle(className, x, y) {
@@ -445,7 +518,6 @@
         return particle;
     }
 
-
     /* Cascada de brillos al entrar o cambiar de página */
     function startMagicRain(count = 100, duration = 1100) {
         const screenWidth = window.innerWidth;
@@ -454,8 +526,11 @@
         for (let i = 0; i < count; i++) {
             const particle = createParticle("falling");
 
-            particle.style.left = Math.random() * screenWidth + "px";
-            particle.style.top = (-10 - Math.random() * 100) + "px";
+            particle.style.left =
+                Math.random() * screenWidth + "px";
+
+            particle.style.top =
+                (-10 - Math.random() * 100) + "px";
 
             particle.style.setProperty(
                 "--fall",
@@ -490,14 +565,13 @@
         }
     }
 
-
     /* Destellos en el punto donde se presiona */
     function createMagicBurst(x, y, count = 14) {
         for (let i = 0; i < count; i++) {
             const particle = createParticle("burst", x, y);
 
-            const angle = (Math.PI * 2 * i / count)
-                + (Math.random() * 0.3);
+            const angle =
+                (Math.PI * 2 * i / count) + (Math.random() * 0.3);
 
             const distance = 20 + Math.random() * 55;
 
@@ -519,10 +593,18 @@
         }
     }
 
+    /* ==========================================
+       DETECCIÓN DE CLICS Y TRANSICIÓN
+       ========================================== */
 
-    /* Detectar clics en todos los botones y enlaces */
     document.addEventListener("click", function (event) {
-        const element = event.target.closest("button, a");
+        const target = event.target;
+
+        if (!(target instanceof Element)) {
+            return;
+        }
+
+        const element = target.closest("button, a");
 
         if (!element) {
             return;
@@ -532,10 +614,11 @@
             return;
         }
 
+        /* Obtener la posición del clic */
         let x = event.clientX;
         let y = event.clientY;
 
-        // Si se activa con teclado, usar el centro del elemento
+        /* Si se activa con teclado, usar el centro del elemento */
         if (event.detail === 0) {
             const rect = element.getBoundingClientRect();
 
@@ -543,34 +626,26 @@
             y = rect.top + rect.height / 2;
         }
 
-        // Destellos para todos los botones y enlaces,
-        // incluidos los que están dentro del menú lateral
+        /* Crear destellos al pulsar botones y enlaces */
         createMagicBurst(x, y, 14);
 
-        // No retrasar enlaces que abren otra pestaña
-        if (
-            element.tagName === "A" &&
-            element.target === "_blank"
-        ) {
-            return;
-        }
-
-        // Conservar la funcionalidad original de los botones
+        /*
+           No interceptar los botones:
+           el menú y el botón history.back() mantienen su función.
+        */
         if (element.tagName === "BUTTON") {
             return;
         }
 
-        const href = element.getAttribute("href");
-
+        /* No retrasar enlaces que abren otra pestaña */
         if (
-            !href ||
-            href.startsWith("javascript:") ||
-            href.startsWith("#")
+            element.target === "_blank" ||
+            element.hasAttribute("download")
         ) {
             return;
         }
 
-        // Respetar clics modificados y botones distintos al principal
+        /* Respetar las acciones especiales del navegador */
         if (
             event.ctrlKey ||
             event.metaKey ||
@@ -581,40 +656,58 @@
             return;
         }
 
-        const destination = element.href;
+        const href = element.getAttribute("href");
 
-        // Aplicar la transición solo dentro del mismo sitio
         if (
-            !destination ||
-            element.origin !== window.location.origin
+            !href ||
+            href.startsWith("javascript:") ||
+            href.startsWith("#") ||
+            href.startsWith("mailto:") ||
+            href.startsWith("tel:")
         ) {
+            return;
+        }
+
+        let destination;
+
+        try {
+            destination = new URL(href, window.location.href);
+        } catch (error) {
+            return;
+        }
+
+        /* Aplicar la transición solo en el mismo sitio */
+        if (destination.origin !== window.location.origin) {
+            return;
+        }
+
+        /*
+           Si ya existe una navegación en curso, evitar
+           que otro clic inicie una transición adicional.
+        */
+        if (window.magicNavigating) {
+            event.preventDefault();
             return;
         }
 
         event.preventDefault();
 
-        if (window.magicNavigating) {
-            return;
-        }
-
         window.magicNavigating = true;
 
         magicTransition.classList.add("active");
 
-        // Cascada mágica antes de cambiar de página
+        /* Cascada mágica antes de cambiar de página */
         startMagicRain(85, 650);
 
-        setTimeout(function () {
-            window.location.href = destination;
+        window.setTimeout(function () {
+            window.location.href = destination.href;
         }, 450);
     });
-
 
     /* Cascada automática al entrar */
     window.addEventListener("load", function () {
         startMagicRain(110, 1200);
     });
-
 </script>
 
 </body>

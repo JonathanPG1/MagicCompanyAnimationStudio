@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -423,11 +422,19 @@
 <script>
     /* MENU LATERAL */
     function openNav() {
-        document.getElementById("side-menu").style.width = "250px";
+        const menu = document.getElementById("side-menu");
+
+        if (menu) {
+            menu.style.width = "250px";
+        }
     }
 
     function closeNav() {
-        document.getElementById("side-menu").style.width = "0";
+        const menu = document.getElementById("side-menu");
+
+        if (menu) {
+            menu.style.width = "0";
+        }
     }
 
     /* REGISTRO DE ESPECIALIDADES VISITADAS */
@@ -448,7 +455,9 @@
                 localStorage.getItem("magicAreasDescubiertas")
             ) || [];
 
-            if (!Array.isArray(areas)) areas = [];
+            if (!Array.isArray(areas)) {
+                areas = [];
+            }
         } catch (error) {
             areas = [];
         }
@@ -462,7 +471,10 @@
                     JSON.stringify(areas)
                 );
             } catch (error) {
-                console.warn("No se pudo guardar el progreso.", error);
+                console.warn(
+                    "No se pudo guardar el progreso.",
+                    error
+                );
             }
         }
     }
@@ -504,7 +516,9 @@
         particle.style.fontSize = size + "px";
         particle.style.color = color;
         particle.style.textShadow =
-            "0 0 4px #ffffff, 0 0 8px " + color + ", 0 0 15px #c084fc";
+            "0 0 4px #ffffff, 0 0 8px " +
+            color +
+            ", 0 0 15px #c084fc";
 
         if (x !== undefined && y !== undefined) {
             particle.style.left = x + "px";
@@ -516,14 +530,19 @@
 
     /* LLUVIA MAGICA */
     function startMagicRain(count = 100, duration = 1100) {
+        if (!magicEffects) return;
+
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
 
         for (let i = 0; i < count; i++) {
             const particle = createParticle("falling");
 
-            particle.style.left = Math.random() * screenWidth + "px";
-            particle.style.top = (-10 - Math.random() * 100) + "px";
+            particle.style.left =
+                Math.random() * screenWidth + "px";
+
+            particle.style.top =
+                (-10 - Math.random() * 100) + "px";
 
             particle.style.setProperty(
                 "--fall",
@@ -562,11 +581,14 @@
 
     /* DESTELLOS AL HACER CLIC */
     function createMagicBurst(x, y, count = 14) {
+        if (!magicEffects) return;
+
         for (let i = 0; i < count; i++) {
             const particle = createParticle("burst", x, y);
 
-            const angle = (Math.PI * 2 * i / count)
-                          + (Math.random() * 0.3);
+            const angle =
+                (Math.PI * 2 * i / count) +
+                (Math.random() * 0.3);
 
             const distance = 20 + Math.random() * 55;
 
@@ -590,9 +612,24 @@
         }
     }
 
+    /* RESTABLECER LA PAGINA AL REGRESAR */
+    function restablecerPagina() {
+        if (magicTransition) {
+            magicTransition.classList.remove("active");
+        }
+
+        closeNav();
+    }
+
+    window.addEventListener("pageshow", restablecerPagina);
+
     /* CLICS Y NAVEGACION */
     document.addEventListener("click", function(event) {
-        const element = event.target.closest("button, a");
+        const target = event.target;
+
+        if (!(target instanceof Element)) return;
+
+        const element = target.closest("button, a");
 
         if (!element) return;
 
@@ -603,11 +640,14 @@
             registrarEspecialidad(magicArea);
         }
 
-        /* No generar destellos dentro del menu */
+        /* No generar destellos dentro del menu lateral */
         if (element.closest("#side-menu")) return;
 
-        if (element.getAttribute("aria-disabled") === "true") return;
+        if (element.getAttribute("aria-disabled") === "true") {
+            return;
+        }
 
+        /* Destellos en la posicion del clic */
         let x = event.clientX;
         let y = event.clientY;
 
@@ -620,13 +660,16 @@
 
         createMagicBurst(x, y, 14);
 
-        /* Mantener enlaces que abren en otra pestaña */
-        if (element.tagName === "A" && element.target === "_blank") {
-            return;
-        }
+        /*
+         * No se bloquean los enlaces.
+         * No se usa preventDefault().
+         * El navegador se encarga de abrir la pagina.
+         */
 
-        /* No alterar las funciones de los botones */
-        if (element.tagName === "BUTTON") {
+        if (
+            element.tagName !== "A" ||
+            element.target === "_blank"
+        ) {
             return;
         }
 
@@ -634,47 +677,31 @@
 
         if (
             !href ||
-            href.startsWith("javascript:") ||
             href.startsWith("#") ||
+            href.startsWith("javascript:") ||
             href.startsWith("mailto:") ||
             href.startsWith("tel:")
         ) {
             return;
         }
 
-        /* Respetar acciones especiales del navegador */
-        if (
-            event.ctrlKey ||
-            event.metaKey ||
-            event.shiftKey ||
-            event.altKey ||
-            event.button !== 0
-        ) {
-            return;
+        /* Mostrar la transicion sin retrasar la navegacion */
+        try {
+            const destination = new URL(
+                href,
+                window.location.href
+            );
+
+            if (
+                destination.origin === window.location.origin &&
+                magicTransition
+            ) {
+                magicTransition.classList.add("active");
+                startMagicRain(45, 500);
+            }
+        } catch (error) {
+            /* El enlace sigue funcionando normalmente */
         }
-
-        const destination = element.href;
-
-        if (
-            !destination ||
-            element.origin !== window.location.origin
-        ) {
-            return;
-        }
-
-        event.preventDefault();
-
-        if (window.magicNavigating) return;
-
-        window.magicNavigating = true;
-
-        magicTransition.classList.add("active");
-
-        startMagicRain(85, 650);
-
-        setTimeout(function() {
-            window.location.href = destination;
-        }, 450);
     });
 
     /* LLUVIA INICIAL */

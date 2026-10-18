@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept Art | Magic Company</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #d6c7f5, #eee6ff);
+}
+
+/* MENU LATERAL */
+#side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: rgba(157, 102, 255, 0.95);
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index: 100;
+    overflow-x: hidden;
+}
+
+#side-menu a {
+    display: block;
+    padding: 15px 30px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+#side-menu a:hover {
+    background-color: white;
+    color: #9d66ff;
+}
+
+#side-menu .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* HEADER */
+.header {
+    position: relative;
+    height: 130px;
+}
+
+.header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* BOTÓN DE REGRESO */
+.btn-back {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 25px solid blue;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* HAMBURGUESA */
+.btn-menu {
+    position: absolute;
+    top: 140px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.btn-menu span {
+    width: 22px;
+    height: 3px;
+    background: #9d66ff;
+}
+
+/* CONTENEDOR */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* TITULO */
+h1 {
+    text-align: center;
+    color: #b36bff;
+    font-size: 34px;
+    margin: 25px 0;
+}
+
+/* CARD */
+.card {
+    background: linear-gradient(135deg, #9d66ff, #7a4ce0);
+    padding: 25px;
+    color: white;
+    border-radius: 10px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+    max-width: 650px;
+}
+
+.card img {
+    width: 100%;
+    max-width: 320px;
+    border: 6px solid white;
+    margin-top: 20px;
+}
+
+.card p {
+    line-height: 1.6;
+}
+
+/* BOTÓN DE SECCIÓN */
+.section-btn {
+    display: block;
+    margin: 25px auto;
+    background: #8c5bff;
+    color: white;
+    padding: 14px 20px;
+    font-weight: bold;
+    text-align: center;
+    width: 240px;
+}
+
+/* GRID PROYECTOS */
+.projects {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.project {
+    background: linear-gradient(135deg, #9d66ff, #7a4ce0);
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.project img {
+    width: 100%;
+    max-width: 260px;
+    border: 6px solid white;
+    margin-bottom: 10px;
+}
+
+.project p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* GRID 2x2 */
+@media (min-width: 768px) {
+    .projects {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* FOOTER */
+.footer {
+    background-image: url('imagenes/ConceptArt/FondoMosaico2.png');
+    background-size: cover;
+    background-position: center;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icons {
+    display: flex;
+    gap: 25px;
+}
+
+.icons a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icons img {
+    width: 55px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.icons img:hover {
+    transform: scale(1.1);
+}
+
+/* EFECTOS MÁGICOS */
+#magic-effects {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 99999;
+}
+
+.magic-particle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #ffffff;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+    will-change: transform, opacity;
+}
+
+.magic-particle.falling {
+    animation: magic-fall var(--duration) ease-in var(--delay) forwards;
+}
+
+@keyframes magic-fall {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, -15px, 0) rotate(0deg) scale(0.4);
+    }
+    12% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--drift), var(--fall), 0)
+            rotate(var(--rotation)) scale(1.2);
+    }
+}
+
+.magic-particle.burst {
+    animation: magic-burst 650ms ease-out forwards;
+}
+
+@keyframes magic-burst {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(
+            calc(-50% + var(--move-x)),
+            calc(-50% + var(--move-y))
+        ) scale(1.3) rotate(140deg);
+    }
+}
+
+/* TRANSICIÓN ENTRE PÁGINAS */
+#magic-transition {
+    position: fixed;
+    inset: 0;
+    background: rgba(157, 102, 255, 0.08);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99998;
+    transition: opacity 180ms ease;
+}
+
+#magic-transition.active {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .magic-particle.falling {
+        animation-duration: 350ms;
+    }
+
+    .magic-particle.burst {
+        animation-duration: 250ms;
+    }
+
+    #magic-transition {
+        transition-duration: 100ms;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- CAPAS DE LOS EFECTOS MÁGICOS -->
+<div id="magic-transition"></div>
+<div id="magic-effects" aria-hidden="true"></div>
+
+<!-- MENU LATERAL -->
+<div id="side-menu">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="index.html">INICIO</a>
+    <a href="mision.html">MISIÓN</a>
+    <a href="disenadores.html">DISEÑADORES</a>
+    <a href="proyectos.html">PROYECTOS</a>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+    <img src="imagenes/ConceptArt/FondoMosaico.png" alt="Fondo decorativo de Concept Art">
+
+    <div
+        class="btn-back"
+        onclick="history.back()"
+        role="button"
+        tabindex="0"
+        aria-label="Regresar"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();history.back();}"
+    ></div>
+
+    <button class="btn-menu" onclick="openNav()" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</div>
+
+<!-- CONTENIDO -->
+<div class="container">
+
+    <h1>CONCEPT ART</h1>
+
+    <div class="card">
+        <p>
+            El concept art es la base visual de cada mundo que creamos. Desarrollamos ilustraciones detalladas que definen la atmósfera, el estilo artístico y el diseño de entornos o elementos, transformando ideas abstractas en guías visuales sólidas para la producción de videojuegos y cine.
+        </p>
+
+        <img src="imagenes/ConceptArt/FondoNq.png" alt="Ilustración de concept art">
+    </div>
+
+    <div class="section-btn">NUESTROS PROYECTOS</div>
+
+    <div class="projects">
+
+        <div class="project">
+            <img src="imagenes/ConceptArt/FondoAjo.png" alt="Concept art de producto con estética kawaii">
+            <p>
+                Concept art de producto aplicado en un soju de fresa con estética kawaii. Define el diseño de etiqueta fusionando marca de consumo, personaje de anime y paleta vibrante.
+            </p>
+        </div>
+
+        <div class="project">
+            <img src="imagenes/ConceptArt/FondoLata.png" alt="Diseño conceptual de producto con estética elegante">
+            <p>
+                Concept art de producto aplicado en un frasco de chiles con estética elegante y minimalista. Etiqueta limpia que fusiona identidad de marca con una paleta sobria y refinada, tipografía moderna y composición equilibrada para transmitir calidad y sofisticación.
+            </p>
+        </div>
+
+        <div class="project">
+            <img src="imagenes/ConceptArt/FondoOff.png" alt="Concept art de prenda streetwear">
+            <p>
+                Concept art de prenda streetwear inspirado en el artista Feid y la estética de Off-White. Diseño gráfico aplicado en la parte posterior de playera, integrando composición radial, personajes ilustrados tipo doodle y paleta verde-azul vibrante para reinterpretar el lenguaje visual urbano y contemporáneo.
+            </p>
+        </div>
+
+        <div class="project">
+            <img src="imagenes/ConceptArt/FondoPausa.png" alt="Póster conceptual para un espacio escolar de descanso">
+            <p>
+                Concept art de póster escolar para un espacio de descanso seguro. Integra un entorno natural con un árbol como símbolo de calma y un personaje kawaii que conecta con los estudiantes. Usa una paleta en verdes y azules para transmitir tranquilidad, invitando a disfrutar las horas libres en un ambiente relajado y sin riesgos.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <div class="icons">
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <img src="imagenes/ConceptArt/LogoFb.png" alt="Facebook">
+        </a>
+
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <img src="imagenes/ConceptArt/LogoIG.png" alt="Instagram">
+        </a>
+
+        <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <img src="imagenes/ConceptArt/LogoWa.png" alt="WhatsApp">
+        </a>
+    </div>
+</div>
+
+<script>
+/* FUNCIONES DEL MENU */
+function openNav() {
+    document.getElementById("side-menu").style.width = "250px";
+    document.body.style.overflow = "hidden";
+}
+
+function closeNav() {
+    document.getElementById("side-menu").style.width = "0";
+    document.body.style.overflow = "auto";
+}
+
+/* REGISTRO DE ESTA ESPECIALIDAD PARA LA GAMIFICACIÓN */
+function registrarAreaDescubierta(area) {
+    const clave = "magicAreasDescubiertas";
+    let areas = [];
+
+    try {
+        areas = JSON.parse(localStorage.getItem(clave) || "[]");
+
+        if (!Array.isArray(areas)) {
+            areas = [];
+        }
+    } catch (error) {
+        areas = [];
+    }
+
+    if (!areas.includes(area)) {
+        areas.push(area);
+        localStorage.setItem(clave, JSON.stringify(areas));
+    }
+}
+
+/* Esta página cuenta como la especialidad Concept Art */
+registrarAreaDescubierta("concept-art");
+
+/* CONFIGURACIÓN DE LOS EFECTOS MÁGICOS */
+const magicEffects = document.getElementById("magic-effects");
+const magicTransition = document.getElementById("magic-transition");
+
+const magicColors = [
+    "#ffffff",
+    "#ffffff",
+    "#f8edff",
+    "#e9c8ff",
+    "#d8a5ff",
+    "#c084fc",
+    "#b57aff",
+    "#f3e8ff"
+];
+
+const magicSymbols = ["✦", "✧", "⋆", "·", "✧", "✦", "•"];
+
+/* CREAR UNA PARTÍCULA */
+function createParticle(className, x, y) {
+    const particle = document.createElement("span");
+
+    particle.className = "magic-particle " + className;
+
+    const color = magicColors[
+        Math.floor(Math.random() * magicColors.length)
+    ];
+
+    const symbol = magicSymbols[
+        Math.floor(Math.random() * magicSymbols.length)
+    ];
+
+    particle.textContent = symbol;
+
+    const size = 6 + Math.random() * 13;
+
+    particle.style.fontSize = size + "px";
+    particle.style.color = color;
+
+    particle.style.textShadow =
+        "0 0 4px #ffffff, 0 0 8px " + color + ", 0 0 15px #c084fc";
+
+    if (x !== undefined && y !== undefined) {
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+    }
+
+    return particle;
+}
+
+/* LLUVIA MÁGICA */
+function startMagicRain(count = 100, duration = 1100) {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    for (let i = 0; i < count; i++) {
+        const particle = createParticle("falling");
+
+        particle.style.left = Math.random() * screenWidth + "px";
+        particle.style.top = (-10 - Math.random() * 100) + "px";
+
+        particle.style.setProperty("--fall", (screenHeight + 120) + "px");
+        particle.style.setProperty("--drift", (-70 + Math.random() * 140) + "px");
+        particle.style.setProperty("--rotation", (-240 + Math.random() * 480) + "deg");
+        particle.style.setProperty("--duration", (duration * (0.65 + Math.random() * 0.7)) + "ms");
+        particle.style.setProperty("--delay", (Math.random() * 350) + "ms");
+
+        magicEffects.appendChild(particle);
+
+        particle.addEventListener(
+            "animationend",
+            () => particle.remove(),
+            { once: true }
+        );
+    }
+}
+
+/* EXPLOSIÓN DE DESTELLOS */
+function createMagicBurst(x, y, count = 14) {
+    for (let i = 0; i < count; i++) {
+        const particle = createParticle("burst", x, y);
+
+        const angle = (Math.PI * 2 * i / count) +
+            (Math.random() * 0.3);
+
+        const distance = 20 + Math.random() * 55;
+
+        particle.style.setProperty(
+            "--move-x",
+            (Math.cos(angle) * distance) + "px"
+        );
+
+        particle.style.setProperty(
+            "--move-y",
+            (Math.sin(angle) * distance) + "px"
+        );
+
+        magicEffects.appendChild(particle);
+
+        particle.addEventListener(
+            "animationend",
+            () => particle.remove(),
+            { once: true }
+        );
+    }
+}
+
+/* EFECTOS AL PULSAR Y CAMBIAR DE PÁGINA */
+document.addEventListener("click", function(event) {
+    const element = event.target.closest("button, a, .btn-back");
+
+    if (!element) return;
+
+    if (element.closest("#side-menu")) return;
+    if (element.getAttribute("aria-disabled") === "true") return;
+
+    let x = event.clientX;
+    let y = event.clientY;
+
+    if (event.detail === 0) {
+        const rect = element.getBoundingClientRect();
+        x = rect.left + rect.width / 2;
+        y = rect.top + rect.height / 2;
+    }
+
+    createMagicBurst(x, y, 14);
+
+    if (element.tagName === "BUTTON") return;
+    if (element.classList.contains("btn-back")) return;
+
+    if (
+        element.tagName === "A" &&
+        element.target === "_blank"
+    ) {
+        return;
+    }
+
+    const href = element.getAttribute("href");
+
+    if (
+        !href ||
+        href.startsWith("javascript:") ||
+        href.startsWith("#") ||
+        href.startsWith("mailto:") ||
+        href.startsWith("tel:")
+    ) {
+        return;
+    }
+
+    if (
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey ||
+        event.button !== 0
+    ) {
+        return;
+    }
+
+    const destination = element.href;
+
+    if (
+        !destination ||
+        element.origin !== window.location.origin
+    ) {
+        return;
+    }
+
+    event.preventDefault();
+
+    if (window.magicNavigating) return;
+
+    window.magicNavigating = true;
+
+    magicTransition.classList.add("active");
+    startMagicRain(85, 650);
+
+    setTimeout(function() {
+        window.location.href = destination;
+    }, 450);
+});
+
+/* LLUVIA DE DESTELLOS AL CARGAR */
+window.addEventListener("load", function() {
+    startMagicRain(110, 1200);
+});
+</script>
+
+</body>
+</html>
